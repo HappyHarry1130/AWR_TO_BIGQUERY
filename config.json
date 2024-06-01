@@ -1,0 +1,11 @@
+{
+    
+    "credentialsPath": "./service-account-key.json",
+    "apikey" : "916a0fae2b7b24b6d45fd87d25cb70b5", 
+    "Bigquery":{
+        "DatasetID": "AWR",
+        "TableID": "Advanced Web Ranking"
+    }, 
+    "maxConcurrentDownloads": 1,
+    "debug": true
+  }
