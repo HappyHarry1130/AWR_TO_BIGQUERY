@@ -56,7 +56,7 @@ const formattedStopDate = formatDate(today);
 
 // Fetch Data from AWR
 async function fetchData(projectName: string): Promise<ApiResponse | null> {
-  const configFilePath = '/home/devops/AWR_TO_BIGQUERY/config.json';
+  const configFilePath = './config.json';
   const config = loadConfig(configFilePath);
   if (!config) {
     console.error('Failed to load config. Exiting...');
@@ -102,7 +102,7 @@ async function CsvToBigquery(projectName: string): Promise<void> {
 }
 
 async function run(): Promise<void> {
-  const configFilePath = '/home/devops/AWR_TO_BIGQUERY/config.json';
+  const configFilePath = './config.json';
   const config = loadConfig(configFilePath);
   if (!config) {
     console.error('Failed to load config. Exiting...');
