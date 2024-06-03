@@ -3,7 +3,6 @@ import { unzip } from './unzip';
 import { convert } from './convert';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
-import readline from 'readline';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,7 +14,7 @@ interface Config {
 }
 
 interface ApiResponse {
-  details: string; // Adjust this type if `details` is an object or another type
+  details: string; 
 }
 
 const loadConfig = (configFilePath: string): Config | null => {
@@ -35,34 +34,10 @@ async function deleteFolderIfExists(folderPath: string): Promise<void> {
     await fsPromises.rm(folderPath, { recursive: true, force: true });
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-      // Folder does not exist
     } else {
       console.error(`Error deleting '${folderPath}' folder:`, err);
     }
   }
-}
-
-function readLinesFromFilePromise(filename: string): Promise<string[]> {
-  return new Promise((resolve, reject) => {
-    const lines: string[] = [];
-    const readStream = fs.createReadStream(filename);
-    const rl = readline.createInterface({
-      input: readStream,
-      crlfDelay: Infinity
-    });
-
-    rl.on('line', (line) => {
-      lines.push(line);
-    });
-
-    rl.on('close', () => {
-      resolve(lines);
-    });
-
-    rl.on('error', (error) => {
-      reject(error);
-    });
-  });
 }
 
 function formatDate(date: Date): string {

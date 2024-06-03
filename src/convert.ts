@@ -30,11 +30,11 @@ async function convert(startDate: string, stopDate: string, projectName: string)
         return;
     }
     const name = projectName.replace(/\s/g, '+');
-    // const credentialsPath = config.credentialsPath;
+    const credentialsPath = config.credentialsPath;
     const datasetId = config.Bigquery.DatasetID;
     const tableId = config.Bigquery.TableID;
     const csvFilePath = `extracted/${name}-ranking-export-${startDate}-${stopDate}.csv`;
-    // process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
     const bigquery = new BigQuery();
 
     async function createTableFromCSV() {

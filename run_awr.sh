@@ -4,7 +4,9 @@
 DL_DIR_NAME=AWR_TO_BIGQUERY
 DL_MAIN_FILE=index.js
 
-gcloud auth activate-service-account --key-file=/home/devops/AWR_TO_BIGQUERY/feed-storage-94d94e70e271.json
+cd /home/devops/${DL_DIR_NAME}
+
+gcloud auth activate-service-account --key-file=/home/devops/service-account-key.json
 # Ensure reports directory exists
 mkdir -p ./reports
 
