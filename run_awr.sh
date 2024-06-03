@@ -4,6 +4,7 @@
 DL_DIR_NAME=AWR_TO_BIGQUERY
 DL_MAIN_FILE=index.js
 
+npm run build
 # Ensure reports directory exists
 mkdir -p ./reports
 
@@ -12,7 +13,7 @@ DATETIME=$(date -Iseconds)
 LOG_FILE_NAME=$(echo $DL_DIR_NAME | sed 's/-/_/g')-$DATETIME.log
 
 # Run Downloader
-node $DL_MAIN_FILE 1> ./reports/$LOG_FILE_NAME 2>&1
+node ./dist/index.js 1> ./reports/gsc-analytics-$DATETIME.log 2>&1
 
 # Error Checking
 ERROR_COUNT=$(grep -ic error ./reports/$LOG_FILE_NAME)

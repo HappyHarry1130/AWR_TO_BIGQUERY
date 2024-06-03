@@ -1,10 +1,14 @@
-const fs = require('fs');
-const axios = require('axios');
-const unzipper = require('unzipper');
+import fs from 'fs';
+import axios from 'axios';
+import unzipper from 'unzipper';
 
-async function unzip(props, projectName) {
+interface UnzipProps {
+  url: string;
+  destinationFolder: string;
+}
+
+async function unzip(zipFileUrl: string, projectName: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const zipFileUrl = props;
     const downloadFilePath = `downloaded/${projectName}.zip`;
     const destinationFolder = 'extracted';
 
@@ -50,4 +54,4 @@ async function unzip(props, projectName) {
   });
 }
 
-module.exports = { unzip };
+export { unzip };

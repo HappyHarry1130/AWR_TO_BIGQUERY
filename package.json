@@ -1,12 +1,26 @@
 {
   "dependencies": {
-    "@google-cloud/bigquery": "^7.7.0",
-    "axios": "^1.6.8",
+    "@google-cloud/bigquery": "^7.7.1",
+    "@types/axios": "^0.14.0",
+    "@types/node": "^20.14.0",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
-    "fs": "^0.0.1-security",
-    "node-cron": "^3.0.3",
-    "open": "^10.1.0",
-    "opn": "^6.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
     "unzipper": "^0.11.6"
+  },
+  "devDependencies": {
+    "@types/unzipper": "^0.10.9"
+  },
+  "scripts": {
+    "build": "tsc",
+    "debug": "npm run build && ts-node src/index.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   }
 }

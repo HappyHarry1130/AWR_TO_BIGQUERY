@@ -1,1 +1,0 @@
-# AWR_TO_BIGQUERY

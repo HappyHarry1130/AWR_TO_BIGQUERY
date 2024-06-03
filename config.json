@@ -1,11 +1,12 @@
 {
-    
-    "credentialsPath": "./service-account-key.json",
-    "apikey" : "916a0fae2b7b24b6d45fd87d25cb70b5", 
-    "Bigquery":{
+    "credentialsPath": "/home/service-account-key.json",
+    "apikey": "916a0fae2b7b24b6d45fd87d25cb70b5",
+    "apiUrl": "https://api.awrcloud.com/v2/get.php",
+    "Bigquery": {
         "DatasetID": "AWR",
         "TableID": "Advanced Web Ranking"
-    }, 
+    },
+    "project" : ["Baseball Monkey", "adventurewagon.com"],
     "maxConcurrentDownloads": 1,
     "debug": true
-  }
+}

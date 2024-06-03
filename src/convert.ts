@@ -1,31 +1,40 @@
-const { BigQuery } = require('@google-cloud/bigquery');
-const fs = require('fs');
-const dotenv = require('dotenv');
+import { BigQuery } from '@google-cloud/bigquery';
+import fs from 'fs';
+import dotenv from 'dotenv';
+
 dotenv.config();
 
-const loadConfig = (configFilePath) => {
+interface Config {
+    credentialsPath: string;
+    Bigquery: {
+        DatasetID: string;
+        TableID: string;
+    };
+}
+
+const loadConfig = (configFilePath: string): Config | null => {
     try {
-        const configFile = fs.readFileSync(configFilePath);
-        return JSON.parse(configFile);
+        const configFile = fs.readFileSync(configFilePath, 'utf-8');
+        return JSON.parse(configFile) as Config;
     } catch (error) {
         console.error('Error reading config file:', error);
         return null;
     }
-  };
+};
 
-async function convert(startDate, stopDate, projectName) {
-    const configFilePath = 'config.json'; 
+async function convert(startDate: string, stopDate: string, projectName: string): Promise<void> {
+    const configFilePath = '../config.json';
     const config = loadConfig(configFilePath);
     if (!config) {
         console.error('Failed to load config. Exiting...');
         return;
     }
     const name = projectName.replace(/\s/g, '+');
-    const credentialsPath = config.credentialsPath;
-    const datasetId = 'AWR';
-    const tableId = "Advanced Web Ranking"
+    // const credentialsPath = config.credentialsPath;
+    const datasetId = config.Bigquery.DatasetID;
+    const tableId = config.Bigquery.TableID;
     const csvFilePath = `extracted/${name}-ranking-export-${startDate}-${stopDate}.csv`;
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
+    // process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
     const bigquery = new BigQuery();
 
     async function createTableFromCSV() {
@@ -46,4 +55,4 @@ async function convert(startDate, stopDate, projectName) {
     await createTableFromCSV();
 }
 
-module.exports = { convert };
+export { convert };
