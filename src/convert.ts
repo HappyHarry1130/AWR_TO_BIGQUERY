@@ -23,7 +23,7 @@ const loadConfig = (configFilePath: string): Config | null => {
 };
 
 async function convert(startDate: string, stopDate: string, projectName: string): Promise<void> {
-    const configFilePath = '../config.json';
+    const configFilePath = '/home/devops/AWR_TO_BIGQUERY/config.json';
     const config = loadConfig(configFilePath);
     if (!config) {
         console.error('Failed to load config. Exiting...');
