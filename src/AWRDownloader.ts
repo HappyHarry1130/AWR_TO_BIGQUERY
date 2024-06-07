@@ -16,7 +16,7 @@ export class AWRDownloader {
     private credentialsPath = 'service-account-key.json';
 
     
-    async execute(config: DownloaderConfig) {
+    async execute(config: DownloaderConfig, project:string) {
         process.env.GOOGLE_APPLICATION_CREDENTIALS = this.credentialsPath;
         try {
             const today = new Date();
@@ -36,14 +36,8 @@ export class AWRDownloader {
                 );
                 return;
             }
-
-            const processingPromises = projects.map(async (projectName: string) => {
-                if (projectName) {
-                    await this.fetchDataProc(projectName);
-                }
-            });
-            await Promise.all(processingPromises);
-
+            
+            await this.fetchDataProc(project);
             // await this.deleteFolderIfExists('downloaded');
             // await this.deleteFolderIfExists('extracted');
         } catch (error: any) {

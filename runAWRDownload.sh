@@ -10,19 +10,21 @@ DL_ZIP_DIR_NAME=downloaded
 DL_EXTRACTED_DIR_NAME=extracted
 # gcloud auth activate-service-account --key-file=./service-account-key.json
 
+mkdir -p ./reports
 
 
-node ./dist/main.js
-# PROJECTS=$(jq -r '.projects[]' config.json)
+LOG_FILE_NAME=$(echo $DL_DIR_NAME | sed 's/-/_/g')-$DATETIME.log
 
-# for PROJECT in $PROJECTS; do
-#     # Run the JavaScript script with Node.js
-#     node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
-#     mkdir -p $DL_EXTRACTED_DIR_NAME
-#     unzip -o $DL_ZIP_DIR_NAME -d $DL_EXTRACTED_DIR_NAME
-#     rm $DL_ZIP_DIR_NAME
-# done
-# DATETIME=$(date -Iseconds)
+PROJECTS=$(jq -r '.projects[]' config.json)
+
+for PROJECT in $PROJECTS; do
+    # Run the JavaScript script with Node.js
+    node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
+    mkdir -p $DL_EXTRACTED_DIR_NAME
+    unzip -o $DL_ZIP_DIR_NAME -d $DL_EXTRACTED_DIR_NAME
+    rm $DL_ZIP_DIR_NAME
+done
+DATETIME=$(date -Iseconds)
 
 
 # gsutil cp awr-downloader-combined.csv gs://statbid/$DL_DIR_NAME/awr_downloader_$DATETIME.csv
