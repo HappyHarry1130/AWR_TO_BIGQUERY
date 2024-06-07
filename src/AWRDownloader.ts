@@ -17,7 +17,6 @@ export class AWRDownloader {
 
     
     async execute(config: DownloaderConfig, project:string) {
-        process.env.GOOGLE_APPLICATION_CREDENTIALS = this.credentialsPath;
         try {
             const today = new Date();
             const startDate = new Date(today);
