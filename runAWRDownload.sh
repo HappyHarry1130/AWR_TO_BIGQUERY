@@ -8,8 +8,8 @@ DL_BQ_TABLE_NAME=Advanced_Web_Ranking
 DL_BQ_TMP_TABLE_NAME=Temp_Advanced_Web_Ranking
 DL_ZIP_DIR_NAME=downloaded
 DL_EXTRACTED_DIR_NAME=extracted
-# gcloud auth activate-service-account --key-file=./service-account-key.json
 
+gcloud auth activate-service-account --key-file=../service-account-key.json
 mkdir -p ./reports
 DATETIME=$(date -Iseconds)
 
@@ -19,9 +19,10 @@ PROJECTS=$(jq -r '.projects[]' config.json)
 
 for PROJECT in $PROJECTS; do
     # Run the JavaScript script with Node.js
+    PROJECT=${PROJECT//+/ }
     node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
     mkdir -p $DL_EXTRACTED_DIR_NAME
-    unzip -o $DL_ZIP_DIR_NAME -d $DL_EXTRACTED_DIR_NAME
+    unzip -o $DL_ZIP_DIR_NAME/$Project.csv -d $DL_EXTRACTED_DIR_NAME
     rm $DL_ZIP_DIR_NAME
     gsutil cp $DL_EXTRACTED_DIR_NAME/$PROJECT.csv gs://statbid1/$DL_DIR_NAME/awr_downloader_$PROJECT_$DATETIME.csv
 done
