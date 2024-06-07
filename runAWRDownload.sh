@@ -15,18 +15,16 @@ DATETIME=$(date -Iseconds)
 
 LOG_FILE_NAME=$(echo $DL_DIR_NAME | sed 's/-/_/g')-$DATETIME.log
 
-PROJECTS=$(jq -r '.projects[]' config.json)
+PROJECTS=$(jq -c '.projects' config.json)
 
-for PROJECT in $PROJECTS; do
-    # Run the JavaScript script with Node.js
-    PROJECT=${PROJECT//+/ }
-    node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
+echo "$PROJECTS" | jq -r '.[]' | while read -r project; do
+  echo "Project: $project"
+  node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
     mkdir -p $DL_EXTRACTED_DIR_NAME
-    unzip -o $DL_ZIP_DIR_NAME/$Project.csv -d $DL_EXTRACTED_DIR_NAME
+    unzip -o $DL_ZIP_DIR_NAME/$PROJECT.csv -d $DL_EXTRACTED_DIR_NAME
     rm $DL_ZIP_DIR_NAME
     gsutil cp $DL_EXTRACTED_DIR_NAME/$PROJECT.csv gs://statbid1/$DL_DIR_NAME/awr_downloader_$PROJECT_$DATETIME.csv
 done
-
 
 
 # gsutil cp awr-downloader-combined.csv gs://statbid/$DL_DIR_NAME/awr_downloader_$DATETIME.csv

@@ -13,7 +13,7 @@ export class AWRDownloader {
     private config = new DownloaderConfig();
     private formattedStartDate = "";
     private formattedStopDate = "";
-    private credentialsPath = 'service-account-key.json';
+
 
     
     async execute(config: DownloaderConfig, project:string) {
