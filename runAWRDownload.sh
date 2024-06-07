@@ -8,6 +8,7 @@ DL_BQ_TABLE_NAME=Advanced_Web_Ranking
 DL_BQ_TMP_TABLE_NAME=Temp_Advanced_Web_Ranking
 DL_ZIP_DIR_NAME=downloaded
 DL_EXTRACTED_DIR_NAME=extracted
+DL_GS_BUCKET_NAME =gs://statbid1/statbid-argos-datacollection-prod/knifecenter/awr
 
 gcloud auth activate-service-account --key-file=../service-account-key.json
 mkdir -p ./reports
@@ -26,9 +27,13 @@ echo "$PROJECTS" | jq -r '.[]' | while read -r PROJECT; do
 #    rm $DL_ZIP_DIR_NAME
 done
 
-gsutil cp "$DL_EXTRACTED_DIR_NAME"/*.csv gs://statbid1/"$DL_DIR_NAME"/awr_downloader_"$PROJECT"_"$DATETIME"/
+
+gsutil cp "$DL_EXTRACTED_DIR_NAME"/*.csv "$DL_GS_BUCKET_NAME"/
 
 
+bq load --source_format=CSV --autodetect \
+  "$DL_BQ_DATASET_NAME"."$DL_BQ_TABLE_NAME" \
+  "$DL_GS_BUCKET_NAME"/*.csv
 # gsutil cp awr-downloader-combined.csv gs://statbid/$DL_DIR_NAME/awr_downloader_$DATETIME.csv
 
 # find ./reports -type f -exec gsutil cp {} gs://statbid/$DL_DIR_NAME/{}-$DATETIME \; >> ./reports/$LOG_FILE_NAME 2>&1
