@@ -3,6 +3,7 @@ import { AWRDownloader } from "./AWRDownloader";
 
 // Main function accepting project as an argument
 async function main(project: string) {
+    project=project.replace("+", " ");
     try {
         const configHelper = new ConfigHelper();
         const config = await configHelper.getConfig();

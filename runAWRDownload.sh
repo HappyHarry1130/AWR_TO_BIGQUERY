@@ -11,7 +11,7 @@ DL_EXTRACTED_DIR_NAME=extracted
 # gcloud auth activate-service-account --key-file=./service-account-key.json
 
 mkdir -p ./reports
-
+DATETIME=$(date -Iseconds)
 
 LOG_FILE_NAME=$(echo $DL_DIR_NAME | sed 's/-/_/g')-$DATETIME.log
 
@@ -23,8 +23,9 @@ for PROJECT in $PROJECTS; do
     mkdir -p $DL_EXTRACTED_DIR_NAME
     unzip -o $DL_ZIP_DIR_NAME -d $DL_EXTRACTED_DIR_NAME
     rm $DL_ZIP_DIR_NAME
+    gsutil cp $DL_EXTRACTED_DIR_NAME/$PROJECT.csv gs://statbid1/$DL_DIR_NAME/awr_downloader_$PROJECT_$DATETIME.csv
 done
-DATETIME=$(date -Iseconds)
+
 
 
 # gsutil cp awr-downloader-combined.csv gs://statbid/$DL_DIR_NAME/awr_downloader_$DATETIME.csv
