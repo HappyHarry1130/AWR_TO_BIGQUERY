@@ -17,14 +17,16 @@ LOG_FILE_NAME=$(echo $DL_DIR_NAME | sed 's/-/_/g')-$DATETIME.log
 
 PROJECTS=$(jq -c '.projects' config.json)
 
-echo "$PROJECTS" | jq -r '.[]' | while read -r project; do
-  echo "Project: $project"
-  node ./dist/main.js "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
+echo "$PROJECTS" | jq -r '.[]' | while read -r PROJECT; do
+  echo "Project: $PROJECT"
+  node ./dist/main.js "$PROJECT"
+  echo "$PROJECT"1> ./reports/awr-downloader-$DATETIME.log 2>&1
     mkdir -p $DL_EXTRACTED_DIR_NAME
-    unzip -o $DL_ZIP_DIR_NAME/$PROJECT.csv -d $DL_EXTRACTED_DIR_NAME
-    rm $DL_ZIP_DIR_NAME
-    gsutil cp $DL_EXTRACTED_DIR_NAME/$PROJECT.csv gs://statbid1/$DL_DIR_NAME/awr_downloader_$PROJECT_$DATETIME.csv
+    unzip -o "$DL_ZIP_DIR_NAME"/"$PROJECT".zip -d $DL_EXTRACTED_DIR_NAME
+#    rm $DL_ZIP_DIR_NAME
 done
+
+gsutil cp $DL_EXTRACTED_DIR_NAME/*.csv gs://statbid1/$DL_DIR_NAME/awr_downloader_$PROJECT_$DATETIME>
 
 
 # gsutil cp awr-downloader-combined.csv gs://statbid/$DL_DIR_NAME/awr_downloader_$DATETIME.csv
