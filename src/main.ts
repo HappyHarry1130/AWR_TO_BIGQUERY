@@ -1,7 +1,6 @@
 import { ConfigHelper } from "./helpers/ConfigHelper";
 import { AWRDownloader } from "./AWRDownloader";
 
-// Main function accepting project as an argument
 async function main(project: string) {
     try {
         const configHelper = new ConfigHelper();
@@ -9,8 +8,7 @@ async function main(project: string) {
 
         if (config) {
             const awrDownloader = new AWRDownloader();
-            const result = await awrDownloader.execute(config, project);
-            // You can handle the result here if needed
+            await awrDownloader.execute(config, project);
         }
     } catch (err) {
         process.stderr.write(err + '\n');
@@ -19,8 +17,8 @@ async function main(project: string) {
     }
 }
 
-// Get the project parameter from command-line arguments
 const project = process.argv[2];
+
 if (project) {
     main(project);
 } else {

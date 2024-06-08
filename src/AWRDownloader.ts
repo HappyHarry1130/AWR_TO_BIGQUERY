@@ -6,7 +6,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { DownloaderConfig } from "./dto/DownloaderConfig";
 import { StatbidMessageLogger } from "./helpers/StatbidMessageLogger";
-require('dotenv').config();
+
 export class AWRDownloader {
     private static SERVICE_NAME = 'awr-downloader';
     private logger = new StatbidMessageLogger();
@@ -14,9 +14,7 @@ export class AWRDownloader {
     private formattedStartDate = "";
     private formattedStopDate = "";
 
-
-    
-    async execute(config: DownloaderConfig, project:string) {
+    async execute(config: DownloaderConfig, project: string) {
         try {
             const today = new Date();
             const startDate = new Date(today);
@@ -26,31 +24,27 @@ export class AWRDownloader {
             this.formattedStartDate = this.formatDate(startDate);
             this.formattedStopDate = this.formatDate(today);
 
-            const { projects } = config;
-            if (!projects || projects.length === 0) {
-                this.logger.logError(
+            if (project) {
+                await this.fetchDataProc(project);
+                this.logger.logInfo(
                     AWRDownloader.SERVICE_NAME,
                     'AWR downloader',
-                    "No projects found in config"
-                );
-                return;
+                    `AWR download complete.`
+                )
             }
-            
-            await this.fetchDataProc(project);
-            // await this.deleteFolderIfExists('downloaded');
-            // await this.deleteFolderIfExists('extracted');
+            else {
+                this.logger.logFatal(
+                    AWRDownloader.SERVICE_NAME,
+                    'AWR downloader',
+                    'There is no project name.'
+                );
+            }
         } catch (error: any) {
             this.logger.logFatal(
                 AWRDownloader.SERVICE_NAME,
                 'AWR downloader',
                 error.message
             );
-        } finally {
-            this.logger.logInfo(
-                AWRDownloader.SERVICE_NAME,
-                'AWR downloader',
-                `AWR download complete.`
-            )
         }
     }
 
@@ -128,15 +122,10 @@ export class AWRDownloader {
         }
     }
 
-
-
-
     private formatDate(date: Date): string {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
         return `${year}-${month}-${day}`;
     }
-
-
 }
