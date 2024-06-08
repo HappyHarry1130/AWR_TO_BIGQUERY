@@ -25,7 +25,7 @@ echo "$PROJECTS" | jq -r '.[]' | while read -r PROJECT; do
   unzip -o "$DL_ZIP_DIR_NAME"/"$PROJECT".zip -d "$DL_EXTRACTED_DIR_NAME"
 done
 
-find ./reports -type f -exec gsutil cp {} "$DL_GS_BUCKET_NAME"/reports \; >> ./reports/$LOG_FILE_NAME 2>&1
+find ./reports -type f -exec gsutil cp {} \; >> ./reports/$LOG_FILE_NAME 2>&1
 gsutil cp "$DL_EXTRACTED_DIR_NAME"/*.csv "$DL_GS_BUCKET_NAME"/ >> ./reports/$LOG_FILE_NAME 2>&1
 
 ERROR_COUNT=$(grep -ic error ./reports/$LOG_FILE_NAME)
