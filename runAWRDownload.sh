@@ -46,7 +46,7 @@ if [ "$ERROR_COUNT" -ne 0 ]; then
   echo "One or more errors occurred during $DL_DIR_NAME processing - check the log for details"
 fi
 
-gsutil cp ./reports/$LOG_FILE_NAME gs://statbid1/$DL_DIR_NAME/$LOG_FILE_NAME
+gsutil cp ./reports/$LOG_FILE_NAME "$DL_GS_BUCKET_NAME"/reports/$LOG_FILE_NAME
 
 # Use -r to remove directories
 rm -r "$DL_ZIP_DIR_NAME"
