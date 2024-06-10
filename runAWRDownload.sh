@@ -7,7 +7,7 @@ DL_BQ_TABLE_NAME=AWR
 DL_BQ_TMP_TABLE_NAME=Temp_Advanced_Web_Ranking
 DL_ZIP_DIR_NAME=downloaded
 DL_EXTRACTED_DIR_NAME=extracted
-DL_GS_BUCKET_NAME=gs://statbid-argos-datacollection-prod/123inkjets/awr
+DL_GS_BUCKET_NAME=gs://statbid-argos-datacollection-prod1/123inkjets/awr
 
 gcloud auth activate-service-account --key-file=../service-account-key.json
 mkdir -p ./reports
