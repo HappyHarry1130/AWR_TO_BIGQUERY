@@ -30,9 +30,6 @@ gsutil cp "$DL_EXTRACTED_DIR_NAME"/*.csv "$DL_GS_BUCKET_NAME"/ >> ./reports/$LOG
 
 ERROR_COUNT=$(grep -ic error ./reports/$LOG_FILE_NAME)
 if [ "$ERROR_COUNT" -eq 0 ]; then
-  if ! bq show $DL_BQ_DATASET_NAME &>/dev/null; then
-    bq mk --dataset $DL_BQ_DATASET_NAME >> ./reports/$LOG_FILE_NAME 2>&1
-  fi
 
   bq load --source_format=CSV --autodetect \
     "$DL_BQ_DATASET_NAME"."$DL_BQ_TABLE_NAME" \
